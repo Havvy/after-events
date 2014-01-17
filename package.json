@@ -1,0 +1,36 @@
+{
+  "name": "after-events",
+  "version": "1.0.0",
+  "description": "Event Emitter with hooks for listener returnn values",
+  "main": "after-events.js",
+  "scripts": {
+    "test": "mocha test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Havvy/after-events.git"
+  },
+  "keywords": [
+    "events",
+    "event-emitter"
+  ],
+  "author": "Ryan Scheel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Havvy/after-events/issues"
+  },
+  "homepage": "https://github.com/Havvy/after-events",
+  "dependencies": {
+    "bluebird": "~1.0.0",
+    "simplesets": "~1.2.0"
+  },
+  "devDependencies": {
+    "fez": "git://github.com/fez/fez",
+    "fez-sweet.js": "~0.6.0",
+    "sweet-bdd": "~1.0.0",
+    "mocha": "~1.17.0",
+    "better-assert": "~1.0.0",
+    "sinon": "~1.7.3",
+    "deep-eql": "~0.1.3"
+  }
+}
