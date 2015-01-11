@@ -4,13 +4,13 @@ const equal = require('deep-eql');
 const inspect = require('util').inspect;
 const format = require('util').format;
 const debug = false;
-const logfn = debug ? console.log.bind(console) : function () {
+const log = debug ? console.log.bind(console) : function () {
     };
 const EventEmiter = require('./after-events.js');
 describe('After Event Emitter', function () {
     var EE;
     beforeEach(function () {
-        logfn();
+        log();
         EE = EventEmiter();
     });
     it('works as an event emitter.', function (done) {
@@ -55,11 +55,9 @@ describe('After Event Emitter', function () {
         it('can take multiple functions, and call them in order', function (done) {
             var callCount = 0;
             EE.on('x', function () {
-                console.log('My!');
                 return true;
             });
             EE.after(function (err, ret, emitted) {
-                console.log('Hi!');
                 try {
                     assert(callCount === 0);
                     callCount += 1;
@@ -68,7 +66,6 @@ describe('After Event Emitter', function () {
                 }
             });
             EE.after(function (err, ret, emitted) {
-                console.log('Bye!');
                 try {
                     assert(callCount === 1);
                     done();
@@ -80,3 +77,4 @@ describe('After Event Emitter', function () {
         });
     });
 });
+//# sourceMappingURL=../sourcemaps/test.js.map

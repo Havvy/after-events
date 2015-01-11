@@ -1,7 +1,7 @@
 {
   "name": "after-events",
   "version": "1.0.0",
-  "description": "Event Emitter with hooks for listener returnn values",
+  "description": "Event Emitter with hooks for listener return values",
   "main": "after-events.js",
   "scripts": {
     "test": "mocha test.js"
@@ -25,8 +25,9 @@
     "simplesets": "~1.2.0"
   },
   "devDependencies": {
-    "fez": "git://github.com/fez/fez",
-    "fez-sweet.js": "~0.6.0",
+    "gulp": "^3.8.8",
+    "gulp-sourcemaps": "^1.2.4",
+    "gulp-sweetjs": "^0.5.4",
     "sweet-bdd": "~1.0.0",
     "mocha": "~1.17.0",
     "better-assert": "~1.0.0",
