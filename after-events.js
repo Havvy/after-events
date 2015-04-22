@@ -65,25 +65,21 @@ const EventEmitter = function () {
             }
 
             events[type].each(function (listener) {
-                setImmediate(function () {
-                    Promise.try(listener, args)
-                    // Catch both return results and errors thrown in listener.
-                    .then(function (res) {
-                        postListenerCallbacks.forEach(function (lcb) {
-                            lcb.apply(null, [undefined, res, type].concat(args));
-                        });
-                    }, function (err) {
-                        postListenerCallbacks.forEach(function (lcb) {
-                            lcb.apply(null, [err, undefined, type].concat(args));
-                        });
-                    })
-                    // Catch errors in after chain
-                    .catch(function (err) {
-                        console.log(err.name);
-                        console.log(err.stack);
-                        throw err;    
-                    })
-                    .done();
+                Promise.try(listener, args)
+                .then(function (res) {
+                    postListenerCallbacks.forEach(function (lcb) {
+                        lcb.apply(null, [undefined, res, type].concat(args));
+                    });
+                }, function (err) {
+                    postListenerCallbacks.forEach(function (lcb) {
+                        lcb.apply(null, [err, undefined, type].concat(args));
+                    });
+                })
+                // Catch errors in after chain
+                .catch(function (err) {
+                    console.log(err.name);
+                    console.log(err.stack);
+                    throw err;
                 });
             });
         },
