@@ -4,7 +4,8 @@
   "description": "Event Emitter with hooks for listener return values",
   "main": "after-events.js",
   "scripts": {
-    "test": "mocha test.js"
+    "test": "mocha test.js -R spec",
+    "build": "gulp build"
   },
   "repository": {
     "type": "git",

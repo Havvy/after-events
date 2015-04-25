@@ -76,5 +76,33 @@ describe('After Event Emitter', function () {
             EE.emit('x');
         });
     });
+    it('performs each callback in isolation', function (done) {
+        var error = new Error();
+        var result = {};
+        EE.on('x', function () {
+            throw error;
+        });
+        EE.on('x', function () {
+            return result;
+        });
+        var callCount = 0;
+        var errCount = 0;
+        var resCount = 0;
+        EE.after(function state(err, ret, emitted) {
+            callCount += 1;
+            if (err) {
+                errCount += 1;
+            }
+            if (ret) {
+                resCount += 1;
+            }
+            if (callCount === 2) {
+                assert(errCount === 1);
+                assert(resCount === 1);
+                done();
+            }
+        });
+        EE.emit('x');
+    });
 });
 //# sourceMappingURL=../sourcemaps/test.js.map
