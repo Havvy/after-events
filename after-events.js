@@ -29,20 +29,19 @@
 const Promise = require('bluebird');
 
 const EventEmitter = function () {
-    const events = {};               // Object<Set<Fn(_) -> _>>
-    var postListenerCallbacks = [];  // [Fn(Error, any, String, ...any) -> void]
+    // type Callback = Fn(Error, any, String, ...any) -> void
+    const events = new Map();        // Map<String, Set<Callback>>
+    var postListenerCallbacks = [];  // [Callback]
 
     return {
         on: function (type, listener) {
-            if (!events[type]) {
-                events[type] = new Set();
+            if (!events.has(type)) {
+                events.set(type, new Set());
             }
 
-            events[type].add(listener);
+            events.get(type).add(listener);
         },
         once: function (type, listener) {
-            const that = this;
-
             const o = () => {
                 this.off(type, o);
                 return listener.apply(null, Array.prototype.slice.call(arguments));
@@ -51,18 +50,18 @@ const EventEmitter = function () {
             this.on(type, o);
         },
         off: function (type, listener) {
-            if (type in events) {
-                events[type].delete(listener);
+            if (events.has(type)) {
+                events.get(type).delete(listener);
             }
         },
         emit: function (type) {
             const args = Array.prototype.slice.call(arguments, 1);
 
-            if (!events[type]) {
+            if (!events.has(type)) {
                 return;
             }
 
-            events[type].forEach(function (listener) {
+            events.get(type).forEach(function (listener) {
                 Promise.try(listener, args)
                 .then(function (res) {
                     postListenerCallbacks.forEach(function (listenerCallback) {
