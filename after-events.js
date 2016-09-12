@@ -26,13 +26,11 @@
  * If you need one of the features this lacks that is marked unused, feel free to send a pull request/file an issue.
  */
 
-
-const Set = require('simplesets').Set; // Still waiting on that ES6 Set API.
 const Promise = require('bluebird');
 
 const EventEmitter = function () {
-    const events = {};               // Map (Set Fn)
-    var postListenerCallbacks = [];  // [Error -> any -> string -> ...any -> void]
+    const events = {};               // Object<Set<Fn(_) -> _>>
+    var postListenerCallbacks = [];  // [Fn(Error, any, String, ...any) -> void]
 
     return {
         on: function (type, listener) {
@@ -45,16 +43,16 @@ const EventEmitter = function () {
         once: function (type, listener) {
             const that = this;
 
-            function o () {
-                that.off(type, o);
+            const o = () => {
+                this.off(type, o);
                 return listener.apply(null, Array.prototype.slice.call(arguments));
-            }
+            };
 
             this.on(type, o);
         },
         off: function (type, listener) {
-            if (events[type]) {
-                events[type].remove(listener);
+            if (type in events) {
+                events[type].delete(listener);
             }
         },
         emit: function (type) {
@@ -64,15 +62,15 @@ const EventEmitter = function () {
                 return;
             }
 
-            events[type].each(function (listener) {
+            events[type].forEach(function (listener) {
                 Promise.try(listener, args)
                 .then(function (res) {
-                    postListenerCallbacks.forEach(function (lcb) {
-                        lcb.apply(null, [undefined, res, type].concat(args));
+                    postListenerCallbacks.forEach(function (listenerCallback) {
+                        listenerCallback.apply(null, [undefined, res, type].concat(args));
                     });
                 }, function (err) {
-                    postListenerCallbacks.forEach(function (lcb) {
-                        lcb.apply(null, [err, undefined, type].concat(args));
+                    postListenerCallbacks.forEach(function (listenerCallback) {
+                        listenerCallback.apply(null, [err, undefined, type].concat(args));
                     });
                 })
                 // Catch errors in after chain

@@ -22,8 +22,7 @@
   },
   "homepage": "https://github.com/Havvy/after-events",
   "dependencies": {
-    "bluebird": "^3.0.0",
-    "simplesets": "~1.2.0"
+    "bluebird": "^3.0.0"
   },
   "devDependencies": {
     "gulp": "^3.8.8",
