@@ -1,6 +1,8 @@
+sudo: false
 language: node_js
 node_js:
-  - "node"
-  - "iojs"
+  - "stable"
+  - "6"
+  - "4"
 notifications:
   irc: "irc.mibbit.net#heartless"
